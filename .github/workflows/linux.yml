@@ -1,0 +1,14 @@
+name: Linux
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - uses: docker://swift:latest
+    - name: Swift Test
+      run: swift test

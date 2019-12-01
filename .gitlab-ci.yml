@@ -1,0 +1,4 @@
+test:
+  image: swift:5.1
+  script:
+    - swift test
