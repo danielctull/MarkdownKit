@@ -13,7 +13,7 @@ public struct Markdown {
 
     public init(string: String) throws {
         root = try Node(markdown: string)
-        blocks = root.children.map(Block.init)
+        blocks = try root.children.map(Block.init)
     }
 }
 

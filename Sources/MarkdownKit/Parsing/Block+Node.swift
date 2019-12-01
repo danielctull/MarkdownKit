@@ -3,23 +3,23 @@ import cmark
 
 extension Block {
     
-    init(_ node: Node) {
+    init(_ node: Node) throws {
 
-        let inlineChildren = { node.children.map(Inline.init) }
-        let blockChildren = { node.children.map(Block.init) }
+        let inlineChildren = { try node.children.map(Inline.init) }
+        let blockChildren = { try node.children.map(Block.init) }
 
         switch node.type {
 
         case CMARK_NODE_PARAGRAPH:
-            self = .paragraph(text: inlineChildren())
+            self = .paragraph(text: try inlineChildren())
 
         case CMARK_NODE_BLOCK_QUOTE:
-            self = .quote(items: blockChildren())
+            self = .quote(items: try blockChildren())
 
         case CMARK_NODE_LIST:
-            let kind = Block.List.Kind(node)
+            let kind = try Block.List.Kind(node)
             let tight = node.listTight > 0
-            let items = node.children.map(Block.List.Item.init)
+            let items = try node.children.map(Block.List.Item.init)
             self = .list(kind: kind, tight: tight, items: items)
 
         case CMARK_NODE_CODE_BLOCK:
@@ -33,13 +33,17 @@ extension Block {
             self = .custom(node.literal!)
 
         case CMARK_NODE_HEADING:
-            self = .heading(level: node.headingLevel, content: inlineChildren())
+            self = .heading(level: node.headingLevel,
+                            content: try inlineChildren())
 
         case CMARK_NODE_THEMATIC_BREAK:
             self = .thematicBreak
 
         default:
-            fatalError("Unrecognized node type: \(node.typeString)")
+            struct UnexpectedBlockType: Error {
+                let name: String
+            }
+            throw UnexpectedBlockType(name: node.typeString)
         }
     }
 }
@@ -100,23 +104,31 @@ extension Node {
 
 extension Block.List.Item {
 
-    init(_ node: Node) {
+    init(_ node: Node) throws {
 
         guard node.type == CMARK_NODE_ITEM else {
-            fatalError("Expected list item, but found \(node.typeString)")
+            struct UnexpectedListItemType: Error {
+                let name: String
+            }
+            throw UnexpectedListItemType(name: node.typeString)
         }
 
-        self = .init(content: node.children.map(Block.init))
+        self = .init(content: try node.children.map(Block.init))
     }
 }
 
 extension Block.List.Kind {
 
-    init(_ node: Node) {
+    init(_ node: Node) throws {
+
         switch node.listType {
         case CMARK_ORDERED_LIST: self = .ordered(start: Int(node.listStart))
         case CMARK_BULLET_LIST: self = .unordered
-        default: fatalError("Unknown list type.")
+        default:
+            struct UnexpectedListKindType: Error {
+                let name: String
+            }
+            throw UnexpectedListKindType(name: node.typeString)
         }
     }
 }

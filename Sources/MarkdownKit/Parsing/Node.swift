@@ -24,6 +24,7 @@ extension Node {
         guard
             let node = cmark_parse_document(markdown, markdown.utf8.count, 0)
         else {
+            struct UnknownParsingError: Error {}
             throw UnknownParsingError()
         }
 

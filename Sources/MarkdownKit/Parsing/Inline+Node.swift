@@ -3,9 +3,9 @@ import cmark
 
 extension Inline {
 
-    init(_ node: Node) {
+    init(_ node: Node) throws {
 
-        let inlineChildren = { node.children.map(Inline.init) }
+        let inlineChildren = { try node.children.map(Inline.init) }
         
         switch node.type {
 
@@ -28,23 +28,26 @@ extension Inline {
             self = .custom(node.literal!)
 
         case CMARK_NODE_EMPH:
-            self = .emphasis(content: inlineChildren())
+            self = .emphasis(content: try inlineChildren())
 
         case CMARK_NODE_STRONG:
-            self = .strong(content: inlineChildren())
+            self = .strong(content: try inlineChildren())
 
         case CMARK_NODE_LINK:
             self = .link(title: node.title,
                          url: node.url,
-                         content: inlineChildren())
+                         content: try inlineChildren())
 
         case CMARK_NODE_IMAGE:
             self = .image(title: node.title,
                           url: node.url,
-                          content: inlineChildren())
+                          content: try inlineChildren())
 
         default:
-            fatalError("Unrecognized node type: \(node.typeString)")
+            struct UnexpectedInlineType: Error {
+                let name: String
+            }
+            throw UnexpectedInlineType(name: node.typeString)
         }
     }
 }
