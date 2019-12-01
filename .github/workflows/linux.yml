@@ -9,6 +9,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - uses: docker://swift:latest
+    - uses: docker://swift:5.1
     - name: Swift Test
       run: swift test
