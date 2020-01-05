@@ -33,7 +33,7 @@ extension Block {
             self = .custom(node.literal!)
 
         case CMARK_NODE_HEADING:
-            let level = Block.Heading.Level(node)
+            let level = try Block.Heading.Level(node)
             self = .heading(try inlineChildren(),
                             level: level)
 
@@ -156,7 +156,10 @@ extension Int32 {
 
 extension Block.Heading.Level {
 
-    fileprivate init(_ node: Node) {
+    fileprivate init(_ node: Node) throws {
+        struct UnknownHeadingLevel: Error {
+            let value: Int
+        }
         switch node.headingLevel {
         case 1: self = .h1
         case 2: self = .h2
@@ -164,7 +167,7 @@ extension Block.Heading.Level {
         case 4: self = .h4
         case 5: self = .h5
         case 6: self = .h6
-        default: self = .h1
+        default: throw UnknownHeadingLevel(value: node.headingLevel)
         }
     }
 }
