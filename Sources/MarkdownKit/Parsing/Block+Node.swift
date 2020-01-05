@@ -11,10 +11,10 @@ extension Block {
         switch node.type {
 
         case CMARK_NODE_PARAGRAPH:
-            self = .paragraph(text: try inlineChildren())
+            self = .paragraph(try inlineChildren())
 
         case CMARK_NODE_BLOCK_QUOTE:
-            self = .quote(items: try blockChildren())
+            self = .quote(try blockChildren())
 
         case CMARK_NODE_LIST:
             let kind = try Block.List.Kind(node)
@@ -33,8 +33,8 @@ extension Block {
             self = .custom(node.literal!)
 
         case CMARK_NODE_HEADING:
-            self = .heading(level: node.headingLevel,
-                            content: try inlineChildren())
+            self = .heading(try inlineChildren(),
+                            level: node.headingLevel)
 
         case CMARK_NODE_THEMATIC_BREAK:
             self = .thematicBreak

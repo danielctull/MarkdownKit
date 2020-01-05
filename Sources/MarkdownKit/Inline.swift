@@ -57,15 +57,15 @@ extension Inline {
 
 extension Inline {
 
-    public static func code(_ text: String) -> Inline {
-        .code(Code(literal: text))
+    public static func code(_ literal: String) -> Inline {
+        .code(Code(literal: literal))
     }
 
     public static func custom(_ literal: String) -> Inline {
         .custom(Custom(literal: literal))
     }
 
-    public static func emphasis(content: [Inline]) -> Inline {
+    public static func emphasis(_ content: [Inline]) -> Inline {
         .emphasis(Emphasis(content: content))
     }
 
@@ -85,7 +85,7 @@ extension Inline {
         .link(Link(title: title, url: url, content: content))
    }
 
-    public static func strong(content: [Inline]) -> Inline {
+    public static func strong(_ content: [Inline]) -> Inline {
         .strong(Strong(content: content))
     }
 

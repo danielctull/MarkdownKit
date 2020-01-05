@@ -77,24 +77,24 @@ extension Block.List {
 
 extension Block {
 
-    public static func quote(items: [Block]) -> Block {
-        .quote(Quote(content: items))
+    public static func quote(_ content: [Block]) -> Block {
+        .quote(Quote(content: content))
     }
 
-    public static func code(_ text: String, info: String? = nil) -> Block {
-        .code(Code(literal: text, info: info))
+    public static func code(_ literal: String, info: String? = nil) -> Block {
+        .code(Code(literal: literal, info: info))
     }
 
     public static func custom(_ literal: String) -> Block {
         .custom(Custom(literal: literal))
     }
 
-    public static func heading(level: Int = 1, content: [Inline]) -> Block {
+    public static func heading(_ content: [Inline], level: Int = 1) -> Block {
         .heading(Heading(level: Heading.Level(level), content: content))
     }
 
-    public static func html(_ text: String) -> Block {
-        .html(HTML(literal: text))
+    public static func html(_ literal: String) -> Block {
+        .html(HTML(literal: literal))
 
     }
 
@@ -104,8 +104,8 @@ extension Block {
         .list(List(kind: kind, tight: tight, items: items))
     }
 
-    public static func paragraph(text: [Inline]) -> Block {
-        .paragraph(Paragraph(content: text))
+    public static func paragraph(_ content: [Inline]) -> Block {
+        .paragraph(Paragraph(content: content))
     }
 }
 

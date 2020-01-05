@@ -28,10 +28,10 @@ extension Inline {
             self = .custom(node.literal!)
 
         case CMARK_NODE_EMPH:
-            self = .emphasis(content: try inlineChildren())
+            self = .emphasis(try inlineChildren())
 
         case CMARK_NODE_STRONG:
-            self = .strong(content: try inlineChildren())
+            self = .strong(try inlineChildren())
 
         case CMARK_NODE_LINK:
             self = .link(title: node.title,
