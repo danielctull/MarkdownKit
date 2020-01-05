@@ -4,22 +4,22 @@ import Foundation
 public struct Markdown {
 
     private let root: Node
-    public let blocks: [Block]
+    public let content: [Block]
 
-    public init(blocks: [Block]) {
-        root = Node(blocks: blocks)
-        self.blocks = blocks
+    public init(content: [Block]) {
+        root = Node(content: content)
+        self.content = content
     }
 
     public init(string: String) throws {
         root = try Node(markdown: string)
-        blocks = try root.children.map(Block.init)
+        content = try root.children.map(Block.init)
     }
 }
 
 extension Markdown: Equatable {
 
     public static func ==(lhs: Markdown, rhs: Markdown) -> Bool {
-        lhs.blocks == rhs.blocks
+        lhs.content == rhs.content
     }
 }

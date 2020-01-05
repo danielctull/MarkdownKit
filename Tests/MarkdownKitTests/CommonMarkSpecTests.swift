@@ -50,7 +50,7 @@ final class CommonMarkSpecTests: XCTestCase {
 extension Markdown {
 
     var html: String {
-        blocks.map { $0.html(tight: false) }.joined()
+        content.map { $0.html(tight: false) }.joined()
     }
 }
 

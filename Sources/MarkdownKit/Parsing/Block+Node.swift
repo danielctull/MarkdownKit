@@ -50,12 +50,12 @@ extension Block {
 
 extension Node {
 
-    convenience init(type: cmark_node_type, blocks: [Block]) {
-        self.init(type: type, children: blocks.map(Node.init))
+    convenience init(type: cmark_node_type, content: [Block]) {
+        self.init(type: type, children: content.map(Node.init))
     }
 
-    convenience init(blocks: [Block]) {
-        self.init(type: CMARK_NODE_DOCUMENT, blocks: blocks)
+    convenience init(content: [Block]) {
+        self.init(type: CMARK_NODE_DOCUMENT, content: content)
     }
 }
 
@@ -66,12 +66,12 @@ extension Node {
         switch block {
 
         case let .paragraph(paragraph):
-            self.init(type: CMARK_NODE_PARAGRAPH, elements: paragraph.content)
+            self.init(type: CMARK_NODE_PARAGRAPH, content: paragraph.content)
 
         case let .list(list):
 
             let listItems = list.items.map {
-                Node(type: CMARK_NODE_ITEM, blocks: $0.content)
+                Node(type: CMARK_NODE_ITEM, content: $0.content)
             }
 
             self.init(type: CMARK_NODE_LIST, children: listItems)
@@ -80,7 +80,7 @@ extension Node {
             listType = cmark_list_type(list.kind)
 
         case let .quote(quote):
-            self.init(type: CMARK_NODE_BLOCK_QUOTE, blocks: quote.content)
+            self.init(type: CMARK_NODE_BLOCK_QUOTE, content: quote.content)
 
         case let .code(code):
             self.init(type: CMARK_NODE_CODE_BLOCK, literal: code.literal)
@@ -93,7 +93,7 @@ extension Node {
             self.init(type: CMARK_NODE_CUSTOM_BLOCK, literal: custom.literal)
 
         case let .heading(heading):
-            self.init(type: CMARK_NODE_HEADING, elements: heading.content)
+            self.init(type: CMARK_NODE_HEADING, content: heading.content)
             headingLevel = Int(heading.level)
 
         case .thematicBreak:

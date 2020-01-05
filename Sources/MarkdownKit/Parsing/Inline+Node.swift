@@ -54,8 +54,8 @@ extension Inline {
 
 extension Node {
 
-    convenience init(type: cmark_node_type, elements: [Inline]) {
-        self.init(type: type, children: elements.map(Node.init))
+    convenience init(type: cmark_node_type, content: [Inline]) {
+        self.init(type: type, children: content.map(Node.init))
     }
 }
 
@@ -69,13 +69,13 @@ extension Node {
             self.init(type: CMARK_NODE_TEXT, literal: text.literal)
 
         case .emphasis(let emphasis):
-            self.init(type: CMARK_NODE_EMPH, elements: emphasis.content)
+            self.init(type: CMARK_NODE_EMPH, content: emphasis.content)
 
         case .code(let code):
             self.init(type: CMARK_NODE_CODE, literal: code.literal)
 
         case .strong(let strong):
-            self.init(type: CMARK_NODE_STRONG, elements: strong.content)
+            self.init(type: CMARK_NODE_STRONG, content: strong.content)
 
         case .html(let html):
             self.init(type: CMARK_NODE_HTML_INLINE, literal: html.literal)
@@ -84,12 +84,12 @@ extension Node {
             self.init(type: CMARK_NODE_CUSTOM_INLINE, literal: custom.literal)
 
         case let .link(link):
-            self.init(type: CMARK_NODE_LINK, elements: link.content)
+            self.init(type: CMARK_NODE_LINK, content: link.content)
             title = link.title
             url = link.url
 
         case let .image(image):
-            self.init(type: CMARK_NODE_IMAGE, elements: image.content)
+            self.init(type: CMARK_NODE_IMAGE, content: image.content)
             title = image.title
             url = image.url
 
