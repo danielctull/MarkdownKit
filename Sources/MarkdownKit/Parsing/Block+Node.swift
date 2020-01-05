@@ -33,8 +33,9 @@ extension Block {
             self = .custom(node.literal!)
 
         case CMARK_NODE_HEADING:
+            let level = Block.Heading.Level(node)
             self = .heading(try inlineChildren(),
-                            level: node.headingLevel)
+                            level: level)
 
         case CMARK_NODE_THEMATIC_BREAK:
             self = .thematicBreak
@@ -104,7 +105,7 @@ extension Node {
 
 extension Block.List.Item {
 
-    init(_ node: Node) throws {
+    fileprivate init(_ node: Node) throws {
 
         guard node.type == CMARK_NODE_ITEM else {
             struct UnexpectedListItemType: Error {
@@ -119,7 +120,7 @@ extension Block.List.Item {
 
 extension Block.List.Kind {
 
-    init(_ node: Node) throws {
+    fileprivate init(_ node: Node) throws {
 
         switch node.listType {
         case CMARK_ORDERED_LIST: self = .ordered(start: Int(node.listStart))
@@ -135,7 +136,7 @@ extension Block.List.Kind {
 
 extension cmark_list_type {
 
-    init(_ kind: Block.List.Kind) {
+    fileprivate init(_ kind: Block.List.Kind) {
         switch kind {
         case .unordered: self = CMARK_BULLET_LIST
         case .ordered: self = CMARK_ORDERED_LIST
@@ -145,10 +146,39 @@ extension cmark_list_type {
 
 extension Int32 {
 
-    init(_ kind: Block.List.Kind) {
+    fileprivate init(_ kind: Block.List.Kind) {
         switch kind {
         case .unordered: self = 0
         case .ordered(let start): self = Int32(start)
+        }
+    }
+}
+
+extension Block.Heading.Level {
+
+    fileprivate init(_ node: Node) {
+        switch node.headingLevel {
+        case 1: self = .h1
+        case 2: self = .h2
+        case 3: self = .h3
+        case 4: self = .h4
+        case 5: self = .h5
+        case 6: self = .h6
+        default: self = .h1
+        }
+    }
+}
+
+extension Int {
+
+    fileprivate init(_ level: Block.Heading.Level) {
+        switch level {
+        case .h1: self = 1
+        case .h2: self = 2
+        case .h3: self = 3
+        case .h4: self = 4
+        case .h5: self = 5
+        case .h6: self = 6
         }
     }
 }

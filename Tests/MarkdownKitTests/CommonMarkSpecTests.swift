@@ -180,6 +180,20 @@ extension Block.Heading {
     var html: String { "<h\(Int(level))>\(content.html)</h\(Int(level))>\n" }
 }
 
+extension Int {
+
+    init(_ level: Block.Heading.Level) {
+        switch level {
+        case .h1: self = 1
+        case .h2: self = 2
+        case .h3: self = 3
+        case .h4: self = 4
+        case .h5: self = 5
+        case .h6: self = 6
+        }
+    }
+}
+
 extension Block.HTML {
     var html: String { literal }
 }

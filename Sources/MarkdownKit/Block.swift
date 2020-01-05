@@ -89,8 +89,8 @@ extension Block {
         .custom(Custom(literal: literal))
     }
 
-    public static func heading(_ content: [Inline], level: Int = 1) -> Block {
-        .heading(Heading(level: Heading.Level(level), content: content))
+    public static func heading(_ content: [Inline], level: Heading.Level = .h1) -> Block {
+        .heading(Heading(level: level, content: content))
     }
 
     public static func html(_ literal: String) -> Block {
@@ -106,36 +106,5 @@ extension Block {
 
     public static func paragraph(_ content: [Inline]) -> Block {
         .paragraph(Paragraph(content: content))
-    }
-}
-
-// MARK: - Conversion
-
-extension Block.Heading.Level {
-
-    public init(_ integer: Int) {
-        switch integer {
-        case 1: self = .h1
-        case 2: self = .h2
-        case 3: self = .h3
-        case 4: self = .h4
-        case 5: self = .h5
-        case 6: self = .h6
-        default: self = .h1
-        }
-    }
-}
-
-extension Int {
-
-    public init(_ level: Block.Heading.Level) {
-        switch level {
-        case .h1: self = 1
-        case .h2: self = 2
-        case .h3: self = 3
-        case .h4: self = 4
-        case .h5: self = 5
-        case .h6: self = 6
-        }
     }
 }
