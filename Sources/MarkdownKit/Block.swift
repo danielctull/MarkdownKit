@@ -81,7 +81,8 @@ extension Block {
         .quote(Quote(content: content))
     }
 
-    public static func code(_ literal: String, info: String? = nil) -> Block {
+    public static func code(_ literal: String,
+                            info: String? = nil) -> Block {
         .code(Code(literal: literal, info: info))
     }
 
@@ -89,7 +90,8 @@ extension Block {
         .custom(Custom(literal: literal))
     }
 
-    public static func heading(_ content: [Inline], level: Heading.Level = .h1) -> Block {
+    public static func heading(_ content: [Inline],
+                               level: Heading.Level = .h1) -> Block {
         .heading(Heading(level: level, content: content))
     }
 
