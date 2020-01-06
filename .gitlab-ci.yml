@@ -1,4 +1,5 @@
 test:
   image: swift:5.1
   script:
-    - swift test
+    - swift build -v
+    - swift test -v -c release
