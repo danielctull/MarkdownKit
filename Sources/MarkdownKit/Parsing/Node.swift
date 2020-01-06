@@ -4,7 +4,7 @@ import cmark
 final class Node {
 
     private let node: OpaquePointer
-    init(node: OpaquePointer) {
+    fileprivate init(node: OpaquePointer) {
         self.node = node
     }
 
