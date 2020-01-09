@@ -10,4 +10,6 @@ public struct Markdown {
     }
 }
 
+// MARK: - Equatable
+
 extension Markdown: Equatable {}

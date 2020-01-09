@@ -1,12 +1,12 @@
 
-public enum Block: Equatable {
-    case quote(Quote)
+public enum Block {
     case code(Code)
     case custom(Custom)
     case heading(Heading)
     case html(HTML)
     case list(List)
     case paragraph(Paragraph)
+    case quote(Quote)
     case thematicBreak
 }
 
@@ -14,64 +14,81 @@ public enum Block: Equatable {
 
 extension Block {
 
-    public struct Quote: Equatable {
-        public let content: [Block]
-    }
-
-    public struct Code: Equatable {
+    public struct Code {
         public let literal: String
         public let info: String?
-
-        public var language: String? {
-            info?.split(separator: " ").first.map(String.init)
-        }
     }
 
-    public struct Custom: Equatable {
+    public struct Custom {
         public let literal: String
     }
 
-    public struct Heading: Equatable {
+    public struct Heading {
         public let level: Level
         public let content: [Inline]
     }
 
-    public struct HTML: Equatable {
+    public struct HTML {
         public let literal: String
     }
 
-    public struct List: Equatable {
+    public struct List {
         public let kind: Kind
         public let tight: Bool
         public let items: [Item]
     }
 
-    public struct Paragraph: Equatable {
+    public struct Paragraph {
         public let content: [Inline]
+    }
+
+    public struct Quote {
+        public let content: [Block]
+    }
+}
+
+extension Block.Code {
+
+    public var language: String? {
+        info?.split(separator: " ").first.map(String.init)
     }
 }
 
 extension Block.Heading {
 
-    public enum Level: Equatable {
+    public enum Level {
         case h1, h2, h3, h4, h5, h6
     }
 }
 
 extension Block.List {
 
-    public enum Kind: Equatable {
-        case ordered(start: Int)
-        case unordered
-    }
-
-    public struct Item: Equatable {
+    public struct Item {
         public let content: [Block]
         public init(content: [Block]) {
             self.content = content
         }
     }
+
+    public enum Kind {
+        case ordered(start: Int)
+        case unordered
+    }
 }
+
+// MARK: - Equatable
+
+extension Block: Equatable {}
+extension Block.Code: Equatable {}
+extension Block.Custom: Equatable {}
+extension Block.Heading: Equatable {}
+extension Block.Heading.Level: Equatable {}
+extension Block.HTML: Equatable {}
+extension Block.List: Equatable {}
+extension Block.List.Item: Equatable {}
+extension Block.List.Kind: Equatable {}
+extension Block.Paragraph: Equatable {}
+extension Block.Quote: Equatable {}
 
 // MARK: - Creating Block values
 

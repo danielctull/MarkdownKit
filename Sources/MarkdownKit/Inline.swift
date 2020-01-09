@@ -1,5 +1,5 @@
 
-public enum Inline: Equatable {
+public enum Inline {
     case code(Code)
     case custom(Custom)
     case emphasis(Emphasis)
@@ -16,42 +16,54 @@ public enum Inline: Equatable {
 
 extension Inline {
 
-    public struct Code: Equatable {
+    public struct Code {
         public let literal: String
     }
 
-    public struct Custom: Equatable {
+    public struct Custom {
         public let literal: String
     }
 
-    public struct Emphasis: Equatable {
+    public struct Emphasis {
         public let content: [Inline]
     }
 
-    public struct HTML: Equatable {
+    public struct HTML {
         public let literal: String
     }
 
-    public struct Image: Equatable {
+    public struct Image {
         public let title: String?
         public let url: String?
         public let content: [Inline]
     }
 
-    public struct Link: Equatable {
+    public struct Link {
         public let title: String?
         public let url: String?
         public let content: [Inline]
     }
 
-    public struct Strong: Equatable {
+    public struct Strong {
         public let content: [Inline]
     }
 
-    public struct Text: Equatable {
+    public struct Text {
         public let literal: String
     }
 }
+
+// MARK: - Equatable
+
+extension Inline: Equatable {}
+extension Inline.Code: Equatable {}
+extension Inline.Custom: Equatable {}
+extension Inline.Emphasis: Equatable {}
+extension Inline.HTML: Equatable {}
+extension Inline.Image: Equatable {}
+extension Inline.Link: Equatable {}
+extension Inline.Strong: Equatable {}
+extension Inline.Text: Equatable {}
 
 // MARK: - Creating Inline values
 
