@@ -2,7 +2,7 @@
 import cmark
 
 extension Block {
-    
+
     init(_ node: Node) throws {
 
         let inlineChildren = { try node.children.map(Inline.init) }
@@ -63,7 +63,7 @@ extension Node {
 extension Node {
 
     convenience init(block: Block) {
-        
+
         switch block {
 
         case let .paragraph(paragraph):

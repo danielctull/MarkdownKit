@@ -11,33 +11,30 @@ struct Test: Codable {
 
 final class CommonMarkSpecTests: XCTestCase {
 
-    let tests = try! JSONDecoder().decode([Test].self, from: commonMarkSpec.data(using: .utf8)!)
-
     func test() throws {
+        let data = try XCTUnwrap(commonMarkSpec.data(using: .utf8))
+        let tests = try JSONDecoder().decode([Test].self, from: data)
         var failures: [Failure] = []
         for test in tests {
-            do { try runTest(test.example) }
-            catch let failure as Failure { failures.append(failure) }
+            do {
+                try runTest(test)
+            } catch let failure as Failure {
+                failures.append(failure)
+            }
         }
         XCTAssertEqual(failures.count, 0)
     }
-
-//    func testSpecific() throws {
-//        try runTest(270)
-//    }
 
     struct Failure: Error {
         let test: Test
         let markdown: Markdown
     }
 
-    private func runTest(_ number: Int) throws {
-
-        let test = tests[number - 1]
+    private func runTest(_ test: Test) throws {
         let markdown = try Markdown(string: test.markdown)
         if markdown.html != test.html.unescape {
             print("=========")
-            print("Test #\(number)")
+            print("Test #\(test.example)")
             print("FAILED")
             print("test.markdown: \(test.markdown)")
             print("test.html:     \(test.html)")
@@ -91,13 +88,11 @@ extension Inline.HTML {
 extension Inline.Image {
 
     private var titleHTML: String {
-        guard let title = title, title.count > 0 else { return "" }
+        guard let title = title, !title.isEmpty else { return "" }
         return #" title="\#(title)""#
     }
 
-    private var altHTML: String {
-        return #" alt="\#(content.literal)""#
-    }
+    private var altHTML: String { #" alt="\#(content.literal)""# }
 
     private var urlHTML: String {
         guard let url = url else { return "" }
@@ -112,7 +107,7 @@ import Foundation
 extension Inline.Link {
 
     private var titleHTML: String {
-        guard let title = title, title.count > 0 else { return "" }
+        guard let title = title, !title.isEmpty else { return "" }
         return #" title="\#(title)""#
     }
 
@@ -201,7 +196,7 @@ extension Block.HTML {
 extension Block.List {
 
     var html: String {
-        switch (kind) {
+        switch kind {
         case .unordered:
             return "<ul>\n\(items.html(tight: tight))</ul>\n"
         case .ordered(1):
@@ -227,12 +222,12 @@ extension Block.List.Item {
 
             switch (tight, index, content.count, item) {
             case (false, 0, _, .paragraph): shouldAddNewline = true
-            case (_,     _, _, .paragraph): shouldAddNewline = false
+            case (_, _, _, .paragraph): shouldAddNewline = false
             case (_, 0, _, .code): shouldAddNewline = true
             case (_, _, _, .code): shouldAddNewline = false
-            case (_,     _, 1, .list): shouldAddNewline = true
+            case (_, _, 1, .list): shouldAddNewline = true
             case (false, 0, _, .list): shouldAddNewline = true
-            case (true,  0, _, .list): shouldAddNewline = false
+            case (true, 0, _, .list): shouldAddNewline = false
             case (false, _, _, .list): shouldAddNewline = false
             case (false, _, _, .quote): shouldAddNewline = false
             default: shouldAddNewline = true
@@ -267,11 +262,11 @@ extension String {
 
         var result = self
         let mapping = [
-            "&amp;" : "&",
-            "&lt;" : "<",
-            "&gt;" : ">",
-            "&quot;" : "\"",
-            "&apos;" : "'"
+            "&amp;": "&",
+            "&lt;": "<",
+            "&gt;": ">",
+            "&quot;": "\"",
+            "&apos;": "'"
         ]
 
         for item in mapping {

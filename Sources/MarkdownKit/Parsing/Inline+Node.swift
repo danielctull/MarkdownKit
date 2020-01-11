@@ -6,7 +6,7 @@ extension Inline {
     init(_ node: Node) throws {
 
         let inlineChildren = { try node.children.map(Inline.init) }
-        
+
         switch node.type {
 
         case CMARK_NODE_TEXT:
