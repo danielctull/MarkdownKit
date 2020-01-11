@@ -1,5 +1,5 @@
 
-@testable import MarkdownKit
+import MarkdownKit
 import XCTest
 
 struct Test: Codable {
