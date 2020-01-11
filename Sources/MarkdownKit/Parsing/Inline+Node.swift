@@ -6,11 +6,12 @@ extension Inline {
     init(_ node: Node) throws {
 
         let inlineChildren = { try node.children.map(Inline.init) }
+        let literal = { try Unwrap(node.literal) }
 
         switch node.type {
 
         case CMARK_NODE_TEXT:
-            self = .text(node.literal!)
+            self = .text(try literal())
 
         case CMARK_NODE_SOFTBREAK:
             self = .softBreak
@@ -19,13 +20,13 @@ extension Inline {
             self = .lineBreak
 
         case CMARK_NODE_CODE:
-            self = .code(node.literal!)
+            self = .code(try literal())
 
         case CMARK_NODE_HTML_INLINE:
-            self = .html(node.literal!)
+            self = .html(try literal())
 
         case CMARK_NODE_CUSTOM_INLINE:
-            self = .custom(node.literal!)
+            self = .custom(try literal())
 
         case CMARK_NODE_EMPH:
             self = .emphasis(try inlineChildren())

@@ -7,6 +7,7 @@ extension Block {
 
         let inlineChildren = { try node.children.map(Inline.init) }
         let blockChildren = { try node.children.map(Block.init) }
+        let literal = { try Unwrap(node.literal) }
 
         switch node.type {
 
@@ -24,13 +25,13 @@ extension Block {
 
         case CMARK_NODE_CODE_BLOCK:
             let language = node.fenceInfo.flatMap { $0.isEmpty ? nil : $0 }
-            self = .code(node.literal!, info: language)
+            self = .code(try literal(), info: language)
 
         case CMARK_NODE_HTML_BLOCK:
-            self = .html(node.literal!)
+            self = .html(try literal())
 
         case CMARK_NODE_CUSTOM_BLOCK:
-            self = .custom(node.literal!)
+            self = .custom(try literal())
 
         case CMARK_NODE_HEADING:
             let level = try Block.Heading.Level(node)
