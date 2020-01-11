@@ -12,7 +12,7 @@ struct Test: Codable {
 final class CommonMarkSpecTests: XCTestCase {
 
     func test() throws {
-        let data = try XCTUnwrap(commonMarkSpec.data(using: .utf8))
+        let data = try Unwrap(commonMarkSpec.data(using: .utf8))
         let tests = try JSONDecoder().decode([Test].self, from: data)
         var failures: [Failure] = []
         for test in tests {
