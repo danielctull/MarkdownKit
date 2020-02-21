@@ -1,33 +1,48 @@
 name: tests
 
-on: [push, pull_request]
+on:
+  - push
+  - pull_request
 
 jobs:
 
-  linux-5_1:
-    name: Linux (Swift 5.1)
+  linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - "swift:5.1"
+    name: Linux
     runs-on: ubuntu-latest
     container:
-      image: swift:5.1
+      image: ${{ matrix.image }}
     steps:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Swift Version
       run: swift --version
-    - name: Build
-      run: swift build -v
-    - name: Test
+    - name: Release Build
+      run: swift build -v -c release
+    - name: Release Test
       run: swift test -v -c release
+    - name: Debug Build
+      run: swift build -v -c debug
+    - name: Debug Test
+      run: swift test -v -c debug
 
   macos:
     name: MacOS
-    runs-on: macOS-latest
+    runs-on: macos-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Swift Version
       run: swift --version
-    - name: Build
-      run: swift build -v
-    - name: Test
+    - name: Release Build
+      run: swift build -v -c release
+    - name: Release Test
       run: swift test -v -c release
+    - name: Debug Build
+      run: swift build -v -c debug
+    - name: Debug Test
+      run: swift test -v -c debug
