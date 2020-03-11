@@ -11,7 +11,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: ["swift:nightly-5.2", "swift:nightly"]
+        image:
+          - "swift:nightly"
+          - "swift:nightly-5.2"
     name: Linux
     runs-on: ubuntu-latest
     container:
