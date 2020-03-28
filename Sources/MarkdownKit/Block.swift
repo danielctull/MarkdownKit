@@ -49,8 +49,25 @@ extension Block {
 
 extension Block.Code {
 
-    public var language: String? {
-        info?.split(separator: " ").first.map(String.init)
+    public struct Language: RawRepresentable, Hashable {
+        public let rawValue: String
+        public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+    }
+
+    public var language: Language? {
+        info?
+            .split(separator: " ")
+            .first
+            .map(String.init)
+            .map(Language.init(rawValue:))
+    }
+}
+
+extension Block.Code.Language: ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        self.init(rawValue: value)
     }
 }
 

@@ -161,7 +161,7 @@ extension Block.Code {
 
     var html: String {
         switch language {
-        case let .some(language): return #"<pre><code class="language-\#(language)">\#(literal)</code></pre>\#n"#
+        case let .some(language): return #"<pre><code class="language-\#(language.rawValue)">\#(literal)</code></pre>\#n"#
         case .none: return "<pre><code>\(literal)</code></pre>\n"
         }
     }
