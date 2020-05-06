@@ -1,6 +1,4 @@
 
-import Foundation
-
 public struct Markdown {
 
     public let content: [Block]
