@@ -66,6 +66,7 @@ extension Block.Code {
 }
 
 extension Block.Code.Language: ExpressibleByStringLiteral {
+
     public init(stringLiteral value: String) {
         self.init(rawValue: value)
     }
@@ -111,10 +112,6 @@ extension Block.Quote: Equatable {}
 
 extension Block {
 
-    public static func quote(_ content: [Block]) -> Block {
-        .quote(Quote(content: content))
-    }
-
     public static func code(_ literal: String,
                             info: String? = nil) -> Block {
         .code(Code(literal: literal, info: info))
@@ -142,5 +139,9 @@ extension Block {
 
     public static func paragraph(_ content: [Inline]) -> Block {
         .paragraph(Paragraph(content: content))
+    }
+
+    public static func quote(_ content: [Block]) -> Block {
+        .quote(Quote(content: content))
     }
 }
