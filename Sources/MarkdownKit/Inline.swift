@@ -1,4 +1,5 @@
 
+/// A markdown inline element.
 public enum Inline {
     case code(Code)
     case custom(Custom)

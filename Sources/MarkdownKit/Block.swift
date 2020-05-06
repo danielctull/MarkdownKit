@@ -1,4 +1,5 @@
 
+/// A markdown block element.
 public enum Block {
     case code(Code)
     case custom(Custom)
